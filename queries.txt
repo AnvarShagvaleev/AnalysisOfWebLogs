@@ -1,0 +1,62 @@
+-- SELECT id, ip, date, method, query, doc_size, user_id
+-- 	FROM public.shopnew;
+
+-- Сколько посетителей было на сайте за месяц?
+-- SELECT DISTINCT
+--     EXTRACT(month from date) as month, COUNT(*)
+-- FROM shopnew
+-- GROUP BY EXTRACT(month from date);
+
+-- Сколько в среднем посетителей бывает за час?
+-- SELECT
+--     ROUND(AVG(number_of_users), 2) as mean
+-- FROM
+-- (SELECT
+--     EXTRACT(hour from date) as hour, count(*) as number_of_users
+-- FROM shopnew
+-- GROUP BY EXTRACT(hour from date)) as t;
+
+-- Сколько посетителей сделало заказы?
+-- SELECT
+--     COUNT(*)
+-- FROM shopnew
+-- WHERE query LIKE '/order.phtml%';
+
+-- Сколько страниц просмотрел посетитель в среднем, максимум, минимум?
+-- SELECT
+--     MIN(number_of_views),
+--     ROUND(AVG(number_of_views), 2) as mean,
+--     MAX(number_of_views)
+-- FROM
+-- (SELECT
+--     ip, COUNT(*) as number_of_views
+-- FROM shopnew
+-- WHERE query LIKE '/catalog.phtml%'
+-- GROUP BY ip) as t;
+
+-- Сколько времени прошло с момента входа на сайт до оформления заказа, в среднем, максимум, минимум?
+-- SELECT
+--     MIN(time),
+--     AVG(time),
+--     MAX(time)
+-- FROM
+-- (SELECT
+--     ip, MAX(date) - MIN(date) as time
+-- FROM shopnew
+-- WHERE ip in (SELECT ip FROM shopnew WHERE query LIKE '/order.phtml%')
+-- GROUP BY ip) as t;
+
+-- Сколько в среднем заказов оформляется за день?
+-- SELECT
+--     ROUND(AVG(cnt), 2) as mean
+-- FROM
+-- (SELECT
+--     EXTRACT(day from date) as day, count(*) as cnt
+-- FROM shopnew
+-- WHERE query LIKE '/order.phtml%'
+-- GROUP BY EXTRACT(day from date)) as t;
+
+-- Имеются ли какие-то взаимозависимые товары, которые покупатель кладет в корзину 
+-- (например, с уровнем поддержки выше 0.01 и достоверностью выше 0.6) ?
+-- (Задача анализа покупательских корзин - поиск ассоциативных правил, пакет Arules).
+

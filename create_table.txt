@@ -1,0 +1,20 @@
+-- Table: public.shopnew
+
+-- DROP TABLE IF EXISTS public.shopnew;
+
+CREATE TABLE IF NOT EXISTS public.shopnew
+(
+    id integer NOT NULL,
+    ip character varying COLLATE pg_catalog."default" NOT NULL,
+    date timestamp without time zone NOT NULL,
+    method character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    query character varying COLLATE pg_catalog."default" NOT NULL,
+    doc_size integer NOT NULL,
+    user_id integer NOT NULL,
+    CONSTRAINT shopnew_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.shopnew
+    OWNER to postgres;
